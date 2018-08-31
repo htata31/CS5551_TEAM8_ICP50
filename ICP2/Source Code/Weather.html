@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <style>
+        .weatherModule
+        {
+            width: 550px;
+            height: 450px;
+            margin: 10px;
+            font-size: 21px;
+            font-style: italic;
+            font-family: Candara;
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+<div ng-app="weather" ng-controller="weatherctrl">
+    <b>State Code: </b>  <input type="text" ng-model="statecode" > &nbsp;
+    <b>City Name: </b><input type="text" ng-model="cityname"> &nbsp;
+    <button id="btn" ng-click="getWeather()"> Show Weather for 5 hours </button>
+    </br>
+    <div class="weatherModule">
+        <b>{{currentweather()}}</b> <br>
+        <img height="35px" align="top" src={{currentIcon}}><br>
+
+        <b>{{currentweather1()}}</b> <br>
+        <img height="35px" align="top" src={{currentIcon1}}><br>
+
+        <b>{{currentweather2()}}</b> <br>
+        <img height="35px" align="top" src={{currentIcon2}}><br>
+
+        <b>{{currentweather3()}}</b> <br>
+        <img height="35px" align="top" src={{currentIcon3}}><br>
+
+        <b>{{currentweather4()}}</b> <br>
+        <img height="35px" align="top" src={{currentIcon4}}><br>
+
+    </div>
+
+</div>
+
+<script>
+    angular.module('weather',[])
+        .controller('weatherctrl', function($scope, $http) {
+            console.log("hi");
+            $scope.getWeather = function() {
+                 $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/hourly/q/'+$scope.statecode+'/'+$scope.cityname +'.json').success(function(data) {
+                    temp="";
+                    console.log(data);
+
+                    // for (i=0;i<5;i++)
+                    //  {
+                    //      temp =temp+"  " +data.hourly_forecast[i].temp.english +"\n";
+                    //  }
+
+                     temp = data.hourly_forecast[0].temp.english;
+                     temp1 = data.hourly_forecast[1].temp.english;
+                     temp2 = data.hourly_forecast[2].temp.english;
+                     temp3 = data.hourly_forecast[3].temp.english;
+                     temp4 = data.hourly_forecast[4].temp.english;
+
+                     icon = data.hourly_forecast[0].icon_url;
+                     icon1 = data.hourly_forecast[1].icon_url;
+                     icon2 = data.hourly_forecast[2].icon_url;
+                     icon3 = data.hourly_forecast[3].icon_url;
+                     icon4 = data.hourly_forecast[4].icon_url;
+
+                    $scope.currentweather = function(){
+                        return "Temperature in "+$scope.cityname+" for the next hour is - "+temp
+                    };
+                     $scope.currentweather1 = function(){
+                         return "Temperature in "+$scope.cityname+" after 2 hours is - "+temp1
+                     };
+                     $scope.currentweather2 = function(){
+                         return "Temperature in "+$scope.cityname+" after 3 hours is - "+temp2
+                     };
+                     $scope.currentweather3 = function(){
+                         return "Temperature in "+$scope.cityname+" after 4 hours is - "+temp3
+                     };
+                     $scope.currentweather4 = function(){
+                         return "Temperature in "+$scope.cityname+" after 5 hours is - "+temp4
+                     };
+                     $scope.currentIcon = icon;
+                     $scope.currentIcon1 = icon1;
+                     $scope.currentIcon2 = icon2;
+                     $scope.currentIcon3 = icon3;
+                     $scope.currentIcon4 = icon4;
+                })
+            }
+
+        });
+</script>
+
+</body>
+
+</html>
