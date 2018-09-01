@@ -2,6 +2,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <!--code for styling of web page-->
     <style>
         .weatherModule
         {
@@ -42,12 +43,14 @@
 
 </div>
 
+<!--This is the controller code where the hhtp request is done and parse the json file to fetch the required data-->
 <script>
     angular.module('weather',[])
         .controller('weatherctrl', function($scope, $http) {
             console.log("hi");
             $scope.getWeather = function() {
-                 $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/hourly/q/'+$scope.statecode+'/'+$scope.cityname +'.json').success(function(data) {
+                 $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/hourly/q/'+$scope.statecode+'/'+$scope.cityname +'.json').success(function(data)
+                 {
                     temp=[];
                     weathers=[];
                     icon=[];
@@ -62,7 +65,12 @@
 
                      $scope.currentweather=[];
                      for (j=0;j<5;j++) {
-                         $scope.currentweather[j]= "Temperature in " + $scope.cityname + " for the next hour is - " + temp[j] + " F and " + weathers[j] ;
+                         if(j==0)
+                         {
+                             $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hour is - " + temp[j] + " F and " + weathers[j] ;
+                         }
+                         else
+                            $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hours is - " + temp[j] + " F and " + weathers[j] ;
                      }
                      $scope.currentIcon=[];
                      $scope.currentIcon= icon;
