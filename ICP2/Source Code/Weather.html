@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
     <!--code for styling of web page-->
@@ -23,24 +22,12 @@
     <b>City Name: </b><input type="text" ng-model="cityname"> &nbsp;
     <button id="btn" ng-click="getWeather()"> Show Weather for 5 hours </button>
     </br>
-    <div  class="weatherModule">
-        <b>{{currentweather[0]}}</b> <br>
-        <img height="30px" src={{currentIcon[0]}} > <br>
-
-        <b>{{currentweather[1]}}</b> <br>
-        <img height="30px" src={{currentIcon[1]}} > <br>
-
-        <b>{{currentweather[2]}}</b> <br>
-        <img height="30px" src={{currentIcon[2]}} > <br>
-
-        <b>{{currentweather[3]}}</b> <br>
-        <img height="30px" src={{currentIcon[3]}} > <br>
-
-        <b>{{currentweather[4]}}</b> <br>
-        <img height="30px" src={{currentIcon[4]}} > <br>
+    <div class="weatherModule">
+        <div  ng-repeat="y in currentweather" >
+            <b>{{currentweather[$index]}}</b> <br>
+            <img ng-src="{{currenticon[$index]}}" /><br>
+        </div>
     </div>
-
-
 </div>
 
 <!--This is the controller code where the hhtp request is done and parse the json file to fetch the required data-->
@@ -51,36 +38,30 @@
             $scope.getWeather = function() {
                  $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/hourly/q/'+$scope.statecode+'/'+$scope.cityname +'.json').success(function(data)
                  {
-                    temp=[];
-                    weathers=[];
                     icon=[];
+                    $scope.currentweather=[];
                     console.log(data);
 
-                    for (i=0;i<5;i++)
+                    for (j=0;j<5;j++)
                      {
-                         temp[i] =data.hourly_forecast[i].temp.english ;
-                         weathers[i]=data.hourly_forecast[i].condition;
-                         icon[i]= data.hourly_forecast[i].icon_url;
-                     }
+                         temp =data.hourly_forecast[j].temp.english ;
+                         weathers=data.hourly_forecast[j].condition;
+                         icon[j]= data.hourly_forecast[j].icon_url;
 
-                     $scope.currentweather=[];
-                     for (j=0;j<5;j++) {
                          if(j==0)
                          {
-                             $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hour is - " + temp[j] + " F and " + weathers[j] ;
+                             $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hour is - " + temp + " F and " + weathers ;
                          }
                          else
-                            $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hours is - " + temp[j] + " F and " + weathers[j] ;
+                             $scope.currentweather[j]= "Temperature in " + $scope.cityname + " after  "+ (j+1) + " hours is - " + temp + " F and " + weathers ;
                      }
-                     $scope.currentIcon=[];
-                     $scope.currentIcon= icon;
+                     $scope.currenticon=icon;
+                     // console.log($scope.currenticon);
 
                 })
             }
 
         });
 </script>
-
 </body>
-
 </html>
