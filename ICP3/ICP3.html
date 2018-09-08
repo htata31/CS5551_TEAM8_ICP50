@@ -1,0 +1,84 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .SearchText
+        {
+            color: darkslategray;
+            margin: 10px;
+            font-size: 35px;
+            font-style: italic;
+            font-family: Candara;
+        }
+        .textbox
+        {
+            background-color: aliceblue;
+            margin: 10px;
+            font-family: Candara;
+        }
+        .button1
+        {
+            color: blue;
+        }
+        .OutputText
+        {
+            color: black;
+            margin: 10px;
+            font-size: 25px;
+            font-family: Candara;
+        }
+
+    </style>
+</head>
+<body background="BgImage.jpg">
+    <div ng-app="calorieitem" ng-controller="calorieitemctrl">
+        <div>
+            <p class="SearchText"></b><b>Search Item</b></p>
+            <input class="textbox" type="text" ng-model="searchitem" ></b>
+            <button class="button1" id="btn1"  ng-click="getCalories()">
+                Show Calories &nbsp;
+                <span class="glyphicon glyphicon-volume-up"></span>
+            </button>
+            <b><p class="OutputText"> {{calories}} </br> {{grams}}</p></b>
+
+        </div>
+    </div>
+
+    <script>
+        angular.module('calorieitem',[])
+            .controller('calorieitemctrl', function($scope, $http) {
+                var _itemName;
+                //console.log("hi");
+                $scope.getCalories = function()
+                {
+                    if($scope.searchitem!=null || $scope.searchitem!=undefined )
+                    {
+                        if(!($scope.searchitem))
+                        {
+                            console.log($scope.searchitem);
+                            $scope.calories=null;
+                            $scope.grams=null;
+                        }
+                        else
+                            {
+
+                            console.log($scope.searchitem);
+                            _itemName = $scope.searchitem;
+                            $http.get('https://api.nutritionix.com/v1_1/search/' + $scope.searchitem + '?results=0:1&fields=*&appId=6e00950b&appKey=69cfa4115950a5e1f58847473e158ed3').success(function (data) {
+                                    $scope.calories = "Calories consumed from  " + $scope.searchitem + " is : " + data.hits[0].fields.nf_calories ;
+                                    $scope.grams= "Serving weight in grams is : " + data.hits[0].fields.nf_serving_weight_grams;
+                                })
+                             var audio = new Audio("https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize?username=18378d0e-0c22-4820-916b-ca6885bfaafe&password=g1E6lofU5Deo&text="+$scope.searchitem);
+                            audio.play();
+                        }                    }
+                    else
+                    {
+                        $scope.calories=null;
+                        $scope.grams=null;
+                    }
+                }
+            });
+    </script>
+</body>
+</html>
