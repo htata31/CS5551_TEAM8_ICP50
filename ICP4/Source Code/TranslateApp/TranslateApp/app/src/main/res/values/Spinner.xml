@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Lang_array">
+        <item>Arabic</item>
+        <item>Irish</item>
+        <item>Hungarian</item>
+        <item>Urdu</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>Korean</item>
+        <item>Telugu</item>
+        <item>Russian</item>
+        <item>Turkish</item>
+        <item>Chinese</item>
+        <item>Czech</item>
+        <item>Dutch</item>
+        <item>German</item>
+    </string-array>
+
+
+</resources>
