@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mongo page</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <script type="text/javascript" src="js/homepage.js"></script>
+</head>
+<body background="Images/Bgimg.jpg" ng-app="mongoSample" ng-controller="mongoController">
+<h2 align="center" style="font-family: Pristina; font-size: 25px" ><b>Mongo Application</b></h2>
+<div class = "homepage">
+    <label class="searchlabel" >Search Details based on Major </label> <br> <input  type="text" ng-model="serachMajor"  id="serach_major">
+    <br>
+    <br>
+    <br>
+</div>
+<div class = "homepageButtons">
+    <input type="button" class="btn" id="search" style="left: 1%" ng-click="Search()" value="Search"> &nbsp
+    <input style="position: relative;left: 1%" type="button" class="btn" id="give_details" onclick="document.getElementById('modal-wrapper').style.display='block'" value="Give detials">
+</div>
+<div class="searchModule">
+    <h2  style="position:relative;left:35%" ><b>{{list}}<b></h2>
+    <table style="position:relative;left:38%"  >
+        <tr  ng-repeat="x in details">
+            <td >{{x}}</td>
+        </tr>
+    </table>
+</div>
+<div id="modal-wrapper"  class="modal">
+
+    <form class="modalcont animate" style="background-color: aliceblue"  action="/action_page.php">
+
+        <div class="closecontainer">
+            <span onclick= "closepopup()" class="close" title="Close PopUp">&times;</span>
+            <h1 style="text-align:center; font-family: Pristina">Applicaiton Details</h1>
+        </div>
+
+        <div class="container">
+            <label ><b> Class Id :</b></label>
+            <input id="classid" ng-model="classid" type="text" placeholder="Enter Class ID"><br><br>
+            <label><b> Name :</b></label>
+            <input id="name" ng-model="name" type="text" placeholder="Student Name"><br><br>
+            <label><b> Course :</b></label>
+            <input  id="course" ng-model="course" type="text" placeholder="Course of study"><br><br>
+            <label><b> Major:</b></label>
+            <input id="major" ng-model="major" type="text" placeholder="Enter your Major" ><br><br>
+            <label><b> Minor:</b></label>
+            <input id="minor" ng-model="minor" type="text" placeholder="Enter your Minor" ><br><br>
+            <input type="button"  style="left: 24%;position: relative" class="btn" ng-click="insertData()" value=" Insert Details " />
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    var modal = document.getElementById('modal-wrapper');
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
+
+</body>
+</html>
