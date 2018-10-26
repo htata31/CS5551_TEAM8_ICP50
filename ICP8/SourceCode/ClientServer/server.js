@@ -1,31 +1,32 @@
-var http = require('http');
-var fs= require("fs");
-var url=require("url");
+var bodyParser = require("body-parser");
+var express = require('express');
+var cors = require('cors');
+var request= require('request-json');
+var app = express();
 
-http.createServer(function (req,res) {
-    var pathname= url.parse(req.url).pathname;
 
-    console.log(pathname);
+var client = request.createClient('http://127.0.0.1:8080/');
 
-    fs.readFile(pathname.substr(1),function (err, data) {
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-        if(err)
-        {
-            console.log(err.toString());
-            res.writeHead(404,{'Content-Type':"text/html"});
-        }
-        else
-        {
-            res.writeHead(200,{'Content-Type':"text/html"});
-            res.write(data.toString());
-        }
 
-        res.end();
+app.get('/getData', function (req, res) {
+    var searchKeyword = req.query.searchkey;
+    client.get("https://kgsearch.googleapis.com/v1/entities:search?query="+searchKeyword+"&key=AIzaSyCZbMz2VUDfsNIawl7W9W64FpZp8gsoh10&limit=1&indent=True", function (error, response, body) {
+        res.send(body);
     });
 
 
 
-}).listen(8080);
+});
 
-// Console will print the message
-console.log('Client Server running at http://127.0.0.1:8080/');
+var server = app.listen(8080,function () {
+    var host = server.address().address
+    console.log("host value"+host);
+    var port = server.address().port
+
+    console.log("Example app listening at http://%s:%s", host, port)
+})
+
